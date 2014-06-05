@@ -2,11 +2,14 @@ import re
 from django.shortcuts import render
 from signup.models import Slot, Signup, GroupMembership
 
+def has_group(user):
+    return GroupMembership.objects.filter(watid=user).exists()
+
 def find_group(user):
-    return GroupMembership.objects.filter(watid=user).first().group_id if GroupMembership.objects.filter(watid=user).exists() else 'None'
+    return GroupMembership.objects.filter(watid=user).first().group_id if has_group(user) else 'None'
 
 def is_member(user, group):
-    return GroupMembership.objects.filter(watid=user).exists() and group == GroupMembership.objects.filter(watid=user).first().group_id
+    return group == find_group(user)
 
 def can_release(uid, slot, as_superuser):
     rv = False
@@ -44,7 +47,7 @@ def index(request):
             slot_id = req.group(1)
             slot = Slot.objects.filter(id=slot_id).first()
             taken = slot.signup_set.exists()
-            if not taken and not already_have_one and request.user.is_authenticated: 
+            if not taken and not already_have_one and has_group(uid):
                 Signup(slot=slot, group_id=find_group(uid),
                        signup_watid=uid).save()
 
@@ -54,7 +57,7 @@ def index(request):
         allowed_options = ''
         if can_release(uid, slot, as_superuser): 
             allowed_options += '<input type="submit" name="release_{0}" value="Release">'.format(slot.id)
-        if not taken and not already_have_one and request.user.is_authenticated:  
+        if not taken and not already_have_one and has_group(uid):
             allowed_options += '<input type="submit" name="request_{0}" value="Request">'.format(slot.id)
 
         info.append((slot,
