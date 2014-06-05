@@ -81,3 +81,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Auth
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+
+# CAS
+AUTHENTICATION_BACKENDS = (
+    'django_cas.backends.CASBackend',
+)
+MIDDLEWARE_CLASSES += ('django_cas.middleware.CASMiddleware',)
+CAS_SERVER_URL = 'https://cas.uwaterloo.ca/cas/'
