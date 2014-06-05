@@ -56,9 +56,9 @@ def index(request):
 
         allowed_options = ''
         if can_release(uid, slot, as_superuser): 
-            allowed_options += '<input type="submit" name="release_{0}" value="Release">'.format(slot.id)
+            allowed_options += '<input class="btn btn-default" type="submit" name="release_{0}" value="Release">'.format(slot.id)
         if not taken and not already_have_one and has_group(uid):
-            allowed_options += '<input type="submit" name="request_{0}" value="Request">'.format(slot.id)
+            allowed_options += '<input class="btn btn-default" type="submit" name="request_{0}" value="Request">'.format(slot.id)
 
         info.append((slot,
                      slot.signup_set.get().str_without_slot() if taken else '',
