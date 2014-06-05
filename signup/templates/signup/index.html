@@ -1,0 +1,16 @@
+<form action="{% url 'signup:index' %}" method="post"> 
+{% csrf_token %}
+{% if user.is_superuser %} 
+ Currently running as {{ effective_who }}.<br />
+ Run as: <input type="text" name="fakewatid" value={{who}} /> <input type="checkbox" name="fake" value="true" {{asroot}}/> 
+
+ <input type="submit" value="go">
+{% endif %}
+
+<table>
+{% for slot, signup_info, actions in info %}
+    <tr><td>{{ slot }}</td><td>{{signup_info}}</td><td>{{actions|safe}}</td></tr>
+{% endfor %}
+</table>
+
+</form>

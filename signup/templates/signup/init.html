@@ -1,0 +1,10 @@
+{% if msgs %}<p><strong>{{ msgs|safe }}</strong></p>{% endif %}
+
+<form action="{% url 'signup:init' %}" method="post">
+{% csrf_token %}
+    <input type="checkbox" name="slots" value="reset"> Reset slots</input>
+    <input type="checkbox" name="signups" value="reset"> Reset signups</input>
+    <input type="checkbox" name="signups" value="dummy"> Populate with dummy signups</input><br />
+    <textarea rows="30" cols="80" name="groupinfo" /></textarea> <br />
+    <input type="submit" value="Initialize" />
+</form>
