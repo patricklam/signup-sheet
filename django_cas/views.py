@@ -1,6 +1,7 @@
 """CAS login/logout replacement views"""
 
-from urllib.parse import urlencode, urljoin
+from urllib import urlencode
+from urlparse import urljoin
 
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.conf import settings
