@@ -44,7 +44,7 @@ def index(request):
             slot_id = req.group(1)
             slot = Slot.objects.filter(id=slot_id).first()
             taken = slot.signup_set.exists()
-            if not taken and not already_have_one: 
+            if not taken and not already_have_one and request.user.is_authenticated: 
                 Signup(slot=slot, group_id=find_group(uid),
                        signup_watid=uid).save()
 
@@ -54,7 +54,7 @@ def index(request):
         allowed_options = ''
         if can_release(uid, slot, as_superuser): 
             allowed_options += '<input type="submit" name="release_{0}" value="Release">'.format(slot.id)
-        if not taken and not already_have_one: 
+        if not taken and not already_have_one and request.user.is_authenticated:  
             allowed_options += '<input type="submit" name="request_{0}" value="Request">'.format(slot.id)
 
         info.append((slot,
